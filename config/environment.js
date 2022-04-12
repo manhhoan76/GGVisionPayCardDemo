@@ -12,7 +12,7 @@ var environments = {
 	staging: {
 		FIREBASE_API_KEY: "AIzaSyBA5i29hhkw98DiJQy8c_vk4i5P4TYhC88",
 		FIREBASE_AUTH_DOMAIN: "ggvisiondemo.firebaseapp.com",
-		// FIREBASE_DATABASE_URL: 'XXXX',
+		FIREBASE_DATABASE_URL: 'https://ggvisiondemo-default-rtdb.firebaseio.com/',
 		FIREBASE_PROJECT_ID: "ggvisiondemo",
 		FIREBASE_STORAGE_BUCKET: "ggvisiondemo.appspot.com",
 		FIREBASE_MESSAGING_SENDER_ID: "213957219611",
