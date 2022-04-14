@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "213957219611",
+    "project_id": "ggvisiondemo",
+    "storage_bucket": "ggvisiondemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213957219611:android:20e13403312ccc81662fbe",
+        "android_client_info": {
+          "package_name": "com.ggvisiondemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213957219611-ogu6kf2abvrg9p5qjm7ectrtiunparbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ggvisiondemo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "213957219611-4hgt1bqirg9img5orj4eg0b76ai1d6dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtDUOGlVfE7r7yLSS4MtC4db7nikSdtr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213957219611-4hgt1bqirg9img5orj4eg0b76ai1d6dn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
