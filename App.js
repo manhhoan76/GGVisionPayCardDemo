@@ -3,12 +3,15 @@ import {
   ActivityIndicator,
   Button,
   Clipboard,
-  FlatList,
-  Image, PermissionsAndroid, ScrollView, Share,
+  Image,
+  PermissionsAndroid,
+  ScrollView,
+  Share,
   StyleSheet,
-  Text, View
+  Text,
+  View,
 } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import uuid from 'uuid';
 import Environment from './config/environment';
 import firebase from './config/firebase';
@@ -18,6 +21,7 @@ export default class App extends React.Component {
     image: null,
     uploading: false,
     googleResponse: null,
+    imageBase64: null
   };
 
   async componentDidMount() {
@@ -54,12 +58,7 @@ export default class App extends React.Component {
 
             <Button onPress={this._takePhoto} title="Take a photo" />
             {this.state.googleResponse && (
-              <FlatList
-                data={this.state.googleResponse.responses[0].labelAnnotations}
-                extraData={this.state}
-                keyExtractor={this._keyExtractor}
-                renderItem={({item}) => <Text>Item: {item.description}</Text>}
-              />
+              <Text style={{color: 'black'}}>{this.state.googleResponse}</Text>
             )}
             {this._maybeRenderImage()}
             {this._maybeRenderUploadingOverlay()}
@@ -142,7 +141,7 @@ export default class App extends React.Component {
             onPress={this._copyToClipboard}
             onLongPress={this._share}
             style={{paddingVertical: 10, paddingHorizontal: 10}}>
-            {JSON.stringify(googleResponse.responses)}
+            {JSON.stringify(googleResponse)}
           </Text>
         )}
       </View>
@@ -174,6 +173,7 @@ export default class App extends React.Component {
       saveToPhotos: true,
       cameraType: 'back',
       quality: 1,
+      includeBase64: true
     });
     console.log({pickerResult});
 
@@ -185,6 +185,7 @@ export default class App extends React.Component {
       mediaType: 'photo',
       cameraType: 'back',
       quality: 1,
+      includeBase64: true
     });
 
     this._handleImagePicked(pickerResult);
@@ -205,35 +206,46 @@ export default class App extends React.Component {
     // 			this.setState({ uploading: false });
     // 		}
     this.setState({
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/ggvisiondemo.appspot.com/o/credit_smbc_card_silver.jpeg?alt=media&token=30a31718-e442-496b-8924-d373f5cf25e9',
+      image: pickerResult.assets[0].uri,
+      imageBase64: pickerResult.assets[0].base64
     });
+    // this.setState({
+    //   image:
+    //     'https://firebasestorage.googleapis.com/v0/b/ggvisiondemo.appspot.com/o/credit-card-jpb01.png?alt=media&token=40fa97f0-9480-43f4-a989-2954f2ef8af8',
+    // });
   };
 
   submitToGoogle = async () => {
     try {
       this.setState({uploading: true});
-      let {image} = this.state;
+      let {imageBase64, image} = this.state;
       let body = JSON.stringify({
         requests: [
           {
             features: [
-              {type: 'LABEL_DETECTION', maxResults: 10},
-              {type: 'LANDMARK_DETECTION', maxResults: 5},
-              {type: 'FACE_DETECTION', maxResults: 5},
-              {type: 'LOGO_DETECTION', maxResults: 5},
-              {type: 'TEXT_DETECTION', maxResults: 5},
-              {type: 'DOCUMENT_TEXT_DETECTION', maxResults: 5},
-              {type: 'SAFE_SEARCH_DETECTION', maxResults: 5},
-              {type: 'IMAGE_PROPERTIES', maxResults: 5},
-              {type: 'CROP_HINTS', maxResults: 5},
-              {type: 'WEB_DETECTION', maxResults: 5},
-            ],
-            image: {
-              source: {
-                imageUri: image,
+              {
+                maxResults: 50,
+                model: 'builtin/latest',
+                type: 'DOCUMENT_TEXT_DETECTION',
               },
+            ],
+            // image: {
+            //   source: {
+            //     imageUri: image,
+            //   },
+            // },
+            image: {
+              content: imageBase64
             },
+            // imageContext: {
+            //   cropHintsParams: {
+            //     aspectRatios: {
+            //       0: 0.8,
+            //       1: 1,
+            //       2: 1.2
+            //     }
+            //   }
+            // }
           },
         ],
       });
@@ -250,9 +262,30 @@ export default class App extends React.Component {
         },
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+      console.log({responseJson});
+      const fullTextAnnotation = responseJson.responses[0].fullTextAnnotation;
+      try {
+        fullTextAnnotation.pages.forEach(page => {
+          page.blocks.forEach(block => {
+            block.paragraphs.forEach(paragraph => {
+              paragraph.words.forEach(word => {
+                const wordText = word.symbols.map(s => s.text).join('');
+                console.log(`Word text: ${wordText}`);
+                // word.symbols.forEach(symbol => {
+                // });
+              });
+            });
+          }); 
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({
+          uploading: false,
+        });
+      }
       this.setState({
-        googleResponse: responseJson,
+        googleResponse: responseJson.responses[0].fullTextAnnotation.text,
         uploading: false,
       });
     } catch (error) {

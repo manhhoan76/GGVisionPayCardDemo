@@ -10,13 +10,14 @@
 
 var environments = {
 	staging: {
-		FIREBASE_API_KEY: "AIzaSyBA5i29hhkw98DiJQy8c_vk4i5P4TYhC88",
-		FIREBASE_AUTH_DOMAIN: "ggvisiondemo.firebaseapp.com",
-		FIREBASE_DATABASE_URL: 'https://ggvisiondemo-default-rtdb.firebaseio.com/',
-		FIREBASE_PROJECT_ID: "ggvisiondemo",
-		FIREBASE_STORAGE_BUCKET: "ggvisiondemo.appspot.com",
-		FIREBASE_MESSAGING_SENDER_ID: "213957219611",
-		GOOGLE_CLOUD_VISION_API_KEY: "AIzaSyBA5i29hhkw98DiJQy8c_vk4i5P4TYhC88"
+		FIREBASE_API_KEY: "xxx",
+		FIREBASE_AUTH_DOMAIN: "xxx",
+		FIREBASE_DATABASE_URL: 'xxx',
+		FIREBASE_PROJECT_ID: "xxx",
+		FIREBASE_STORAGE_BUCKET: "xxx",
+		FIREBASE_MESSAGING_SENDER_ID: "xxx",
+		GOOGLE_CLOUD_VISION_API_KEY: "xxx"
+		// GOOGLE_CLOUD_VISION_API_KEY: "xxx"
 	},
 	production: {
 		// Warning: This file still gets included in your native binary and is not a secure way to store secrets if you build for the app stores. Details: https://github.com/expo/expo/issues/83
