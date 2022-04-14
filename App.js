@@ -9,9 +9,9 @@ import {
   Share,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import uuid from 'uuid';
 import Environment from './config/environment';
 import firebase from './config/firebase';
@@ -21,7 +21,7 @@ export default class App extends React.Component {
     image: null,
     uploading: false,
     googleResponse: null,
-    imageBase64: null
+    imageBase64: null,
   };
 
   async componentDidMount() {
@@ -173,7 +173,7 @@ export default class App extends React.Component {
       saveToPhotos: true,
       cameraType: 'back',
       quality: 1,
-      includeBase64: true
+      includeBase64: true,
     });
     console.log({pickerResult});
 
@@ -185,36 +185,25 @@ export default class App extends React.Component {
       mediaType: 'photo',
       cameraType: 'back',
       quality: 1,
-      includeBase64: true
+      includeBase64: true,
     });
 
     this._handleImagePicked(pickerResult);
   };
 
   _handleImagePicked = async pickerResult => {
-    // 		try {
-    // 			this.setState({ uploading: true });
-    // console.log({pickerResultHandle: pickerResult})
-    // 			if (pickerResult.assets[0].uri !== '') {
-    // 				uploadUrl = await uploadImageAsync(pickerResult.assets[0].uri);
-    // 				this.setState({ image: uploadUrl });
-    // 			}
-    // 		} catch (e) {
-    // 			console.log(e);
-    // 			alert('Upload failed, sorry :(');
-    // 		} finally {
-    // 			this.setState({ uploading: false });
-    // 		}
     this.setState({
       image: pickerResult.assets[0].uri,
-      imageBase64: pickerResult.assets[0].base64
+      imageBase64: pickerResult.assets[0].base64,
     });
-    // this.setState({
-    //   image:
-    //     'https://firebasestorage.googleapis.com/v0/b/ggvisiondemo.appspot.com/o/credit-card-jpb01.png?alt=media&token=40fa97f0-9480-43f4-a989-2954f2ef8af8',
-    // });
   };
 
+  // ---You can use image by uri---
+  // image: {
+  //   source: {
+  //     imageUri: image,
+  //   },
+  // }
   submitToGoogle = async () => {
     try {
       this.setState({uploading: true});
@@ -229,23 +218,9 @@ export default class App extends React.Component {
                 type: 'DOCUMENT_TEXT_DETECTION',
               },
             ],
-            // image: {
-            //   source: {
-            //     imageUri: image,
-            //   },
-            // },
             image: {
-              content: imageBase64
+              content: imageBase64,
             },
-            // imageContext: {
-            //   cropHintsParams: {
-            //     aspectRatios: {
-            //       0: 0.8,
-            //       1: 1,
-            //       2: 1.2
-            //     }
-            //   }
-            // }
           },
         ],
       });
@@ -275,7 +250,7 @@ export default class App extends React.Component {
                 // });
               });
             });
-          }); 
+          });
         });
       } catch (error) {
         console.log(error);
