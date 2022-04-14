@@ -59,4 +59,4 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
-/config/environment.js
+config/environment
