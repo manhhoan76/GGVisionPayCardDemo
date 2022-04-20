@@ -9,12 +9,13 @@ import {
   Share,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import uuid from 'uuid';
 import Environment from './config/environment';
 import firebase from './config/firebase';
+import ImagePicker from 'react-native-image-crop-picker';
 
 export default class App extends React.Component {
   state = {
@@ -37,7 +38,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    let {image} = this.state;
+    let {image} = this.state;q
 
     return (
       <View style={styles.container}>
@@ -56,7 +57,12 @@ export default class App extends React.Component {
               title="Pick an image from camera roll"
             />
 
-            <Button onPress={this._takePhoto} title="Take a photo" />
+            <View style={{marginVertical: 20}}>
+              <Button onPress={this._takePhoto} title="Take a photo" />
+            </View>
+
+            <Button onPress={this._scanCard} title="ScanCard a photo" />
+
             {this.state.googleResponse && (
               <Text style={{color: 'black'}}>{this.state.googleResponse}</Text>
             )}
@@ -178,6 +184,25 @@ export default class App extends React.Component {
     console.log({pickerResult});
 
     this._handleImagePicked(pickerResult);
+  };
+
+  _scanCard = async () => {
+    const data = await ImagePicker.openPicker({
+      width: 856,
+      height: 539,
+      cropping: true,
+      compressImageQuality: 1,
+    });
+    console.log(data);
+    // this._handleImagePicked(pickerResult);
+    // setIsLoading(true);
+    // const param = {
+    //   path: data.path,
+    //   grayscale: true, // or true
+    //   base64: false, // or true
+    //   resizeRatio: 0.8, // 1.0 is origin value
+    //   imageQuality: 1, // 1.0 is max quality value
+    // };
   };
 
   _pickImage = async () => {
